@@ -1,0 +1,13 @@
+{
+  "n": 57,
+  "metrics": {
+    "cause_accuracy": 1.0,
+    "hard_cause_accuracy": 1.0,
+    "wild_cause_accuracy": 1.0,
+    "escalation_correct": 1.0,
+    "escalation_recall": 1.0,
+    "evidence_valid": 1.0,
+    "no_secret_leak": 1.0,
+    "reply_ok": 1.0
+  }
+}
