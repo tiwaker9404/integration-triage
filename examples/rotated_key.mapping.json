@@ -1,0 +1,9 @@
+{
+  "request_id": "call_id",
+  "status": "http_code",
+  "ts": "started",
+  "key_prefix": "key",
+  "error_code": "err_code",
+  "message": "detail",
+  "user_id": "who"
+}

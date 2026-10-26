@@ -1,0 +1,29 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test-and-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - run: pytest -q
+      - name: Eval gate (fails if scores drop below evals/baseline.json)
+        run: triage eval --check
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t integration-triage:ci .
+      - name: Boot it and diagnose a sample incident
+        run: |
+          docker run -d --name t -p 8080:8080 -e TRIAGE_ENV=dev integration-triage:ci
+          for i in $(seq 1 30); do curl -sf localhost:8080/healthz && break; sleep 1; done
+          python3 -c "import json; print(json.dumps({'ticket': 'down?', 'logs': open('examples/outage.jsonl').read()}))" > body.json
+          curl -sf -X POST localhost:8080/v1/diagnose -H 'content-type: application/json' -d @body.json | grep -q upstream_outage
+          docker logs t

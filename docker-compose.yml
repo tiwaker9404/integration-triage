@@ -1,0 +1,14 @@
+# cp .env.example .env   (set TRIAGE_API_KEYS)   then: docker compose up -d
+services:
+  triage:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"     # localhost only; put a TLS proxy in front to expose it
+    env_file: .env
+    environment:
+      TRIAGE_ENV: prod
+    volumes:
+      - triagedata:/data
+    restart: unless-stopped
+volumes:
+  triagedata:

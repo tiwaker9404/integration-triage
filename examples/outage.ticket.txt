@@ -1,0 +1,1 @@
+Salesforce calls are failing for all of our users since about 2pm. FYI my key is sk_live_mtch3rpm6e7669 if that helps.
